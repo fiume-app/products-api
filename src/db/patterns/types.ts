@@ -9,6 +9,7 @@ export interface PATTERNS_SCHEMA extends Document {
   }[],
   min_purchasable: number,
   max_purchasable: number,
+  price: number,
   purchasable: boolean,
   quarantined: boolean,
   banned: boolean,

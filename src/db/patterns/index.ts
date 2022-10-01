@@ -31,7 +31,15 @@ const patterns_schema = new Schema<PATTERNS_SCHEMA>({
     type: SchemaTypes.Number,
     required: true,
   },
+  price: {
+    type: SchemaTypes.Number,
+    required: true,
+  },
   purchasable: {
+    type: SchemaTypes.Boolean,
+    required: true,
+  },
+  quarantined: {
     type: SchemaTypes.Boolean,
     required: true,
   },

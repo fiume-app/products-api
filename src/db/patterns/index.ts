@@ -31,6 +31,18 @@ const patterns_schema = new Schema<PATTERNS_SCHEMA>({
     type: SchemaTypes.Number,
     required: true,
   },
+  images: [
+    {
+      image: {
+        type: SchemaTypes.String,
+        required: true,
+      },
+      id: {
+        type: SchemaTypes.String,
+        required: true,
+      },
+    },
+  ],
   price: {
     type: SchemaTypes.Number,
     required: true,

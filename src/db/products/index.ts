@@ -19,18 +19,6 @@ const products_schema = new Schema<PRODUCTS_SCHEMA>({
     type: SchemaTypes.Number,
     required: true,
   },
-  images: [
-    {
-      image: {
-        type: SchemaTypes.String,
-        required: true,
-      },
-      id: {
-        type: SchemaTypes.String,
-        required: true,
-      },
-    },
-  ],
   purchasable: {
     type: SchemaTypes.Boolean,
     required: true,

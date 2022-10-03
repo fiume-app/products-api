@@ -61,6 +61,12 @@ export const GET_handler: RouteHandlerMethod = async (request, reply) => {
         inventory_count: {
           $sum: 1,
         },
+        createdAt: {
+          $first: '$createdAt',
+        },
+      })
+      .sort({
+        createdAt: 1,
       })
       .skip(query.skip)
       .limit(query.limit + 1)
@@ -81,6 +87,49 @@ export const GET_handler: RouteHandlerMethod = async (request, reply) => {
                     $eq: [
                       '$_id',
                       '$$product_id',
+                    ],
+                  },
+                  {
+                    $eq: [
+                      '$purchasable',
+                      true,
+                    ],
+                  },
+                  {
+                    $eq: [
+                      '$quarantined',
+                      false,
+                    ],
+                  },
+                  {
+                    $eq: [
+                      '$banned',
+                      false,
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+        ],
+      })
+      .lookup({
+        from: 'patterns',
+        as: 'pattern',
+        let: {
+          pattern_id: {
+            $toObjectId: '$pattern',
+          },
+        },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  {
+                    $eq: [
+                      '$_id',
+                      '$$pattern_id',
                     ],
                   },
                   {
@@ -141,17 +190,23 @@ export const GET_handler: RouteHandlerMethod = async (request, reply) => {
           {
             $group: {
               _id: '$_id',
+              product_id: {
+                $first: '$product_id',
+              },
               name: {
                 $first: '$name',
               },
-              description: {
-                $first: '$description',
+              details: {
+                $first: '$details',
               },
               min_purchasable: {
                 $first: '$min_purchasable',
               },
               max_purchasable: {
                 $first: '$max_purchasable',
+              },
+              price: {
+                $first: '$price',
               },
               purchasable: {
                 $first: '$purchasable',
@@ -170,49 +225,6 @@ export const GET_handler: RouteHandlerMethod = async (request, reply) => {
               },
               images: {
                 $push: '$images',
-              },
-            },
-          },
-        ],
-      })
-      .lookup({
-        from: 'patterns',
-        as: 'pattern',
-        let: {
-          pattern_id: {
-            $toObjectId: '$pattern',
-          },
-        },
-        pipeline: [
-          {
-            $match: {
-              $expr: {
-                $and: [
-                  {
-                    $eq: [
-                      '$_id',
-                      '$$pattern_id',
-                    ],
-                  },
-                  {
-                    $eq: [
-                      '$purchasable',
-                      true,
-                    ],
-                  },
-                  {
-                    $eq: [
-                      '$quarantined',
-                      false,
-                    ],
-                  },
-                  {
-                    $eq: [
-                      '$banned',
-                      false,
-                    ],
-                  },
-                ],
               },
             },
           },

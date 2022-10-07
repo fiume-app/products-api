@@ -83,4 +83,25 @@ export const v1: FastifyPluginAsync = async (instance, _opts) => {
     ],
     handler: index.bags.dynamic.PATCH_handler,
   });
+
+  instance.route({
+    url: '/orders',
+    method: 'POST',
+    preHandler: [
+      verify_firebase_id_token,
+      fetch_buyer,
+    ],
+    handler: index.orders.POST_handler,
+  });
+
+  instance.route({
+    url: '/orders',
+    method: 'GET',
+    schema: index.orders.GET_validation_schema,
+    preHandler: [
+      verify_firebase_id_token,
+      fetch_buyer,
+    ],
+    handler: index.orders.GET_handler,
+  });
 };

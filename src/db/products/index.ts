@@ -31,6 +31,61 @@ const products_schema = new Schema<PRODUCTS_SCHEMA>({
     type: SchemaTypes.Boolean,
     required: true,
   },
+  differentiators: [
+    {
+      key: {
+        type: SchemaTypes.String,
+        required: true,
+      },
+      header_leading_enabled: {
+        type: SchemaTypes.Boolean,
+        required: true,
+      },
+      header_leading_type: {
+        type: SchemaTypes.String,
+        enum: [
+          'icon',
+        ],
+      },
+      header_leading_content: {
+        type: SchemaTypes.String,
+      },
+      header_title: {
+        type: SchemaTypes.String,
+      },
+      header_trailing_enabled: {
+        type: SchemaTypes.Boolean,
+        required: true,
+      },
+      header_trailing_type: {
+        type: SchemaTypes.String,
+        enum: [
+          'link',
+        ],
+      },
+      header_trailing_content: {
+        type: SchemaTypes.String,
+      },
+      selector_type: {
+        type: SchemaTypes.String,
+        enum: [
+          'image',
+          'text',
+        ],
+        required: true,
+      },
+      selector_shape: {
+        type: SchemaTypes.String,
+        enum: [
+          'circle',
+          'rectangle',
+          'square',
+          'rounded_rectangle',
+        ],
+        required: true,
+      },
+    },
+  ],
 }, {
   timestamps: true,
 });

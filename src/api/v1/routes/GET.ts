@@ -37,6 +37,9 @@ export const GET_validation_schema: FastifySchema = {
 export const GET_handler: RouteHandlerMethod = async (request, reply) => {
   const query = request.query as GetQuery;
 
+  // @ts-ignore
+  const user = request.user as LeanDocument<BUYERS_SCHEMA & { _id: any }>;
+
   let fetch_res: LeanDocument<{
     _id: any,
     product: LeanDocument<PRODUCTS_SCHEMA & { _id: any }>,
@@ -236,6 +239,63 @@ export const GET_handler: RouteHandlerMethod = async (request, reply) => {
         },
         pattern: {
           $first: '$pattern',
+        },
+      })
+      .lookup({
+        from: 'bags',
+        as: 'bag_contains',
+        let: {
+          buyer_id: user._id,
+          product_id: {
+            $toString: '$product._id',
+          },
+          pattern_id: {
+            $toString: '$pattern_id',
+          },
+        },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  {
+                    $eq: [
+                      '$buyer_id',
+                      '$$buyer_id',
+                    ],
+                  },
+                  {
+                    $eq: [
+                      '$product_id',
+                      '$$product_id',
+                    ],
+                  },
+                  {
+                    $eq: [
+                      '$pattern_id',
+                      '$$pattern_id',
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+        ],
+      })
+      .addFields({
+        bag_contains: {
+          $cond: {
+            if: {
+              $eq: [
+                {
+                  $size: '$bag_contains',
+                },
+                0,
+              ],
+            },
+            then: false,
+            else: true,
+          },
         },
       });
   } catch (e) {

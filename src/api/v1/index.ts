@@ -18,4 +18,69 @@ export const v1: FastifyPluginAsync = async (instance, _opts) => {
     ],
     handler: index.GET_handler,
   });
+
+  instance.route({
+    url: '/:product_id/patterns',
+    method: 'GET',
+    schema: index.dynamic.patterns.GET_validation_schema,
+    preHandler: [
+      verify_firebase_id_token,
+      fetch_buyer,
+    ],
+    handler: index.dynamic.patterns.GET_handler,
+  });
+
+  instance.route({
+    url: '/:product_id/patterns/:pattern_id',
+    method: 'GET',
+    schema: index.dynamic.patterns.dynamic.GET_validation_schema,
+    preHandler: [
+      verify_firebase_id_token,
+      fetch_buyer,
+    ],
+    handler: index.dynamic.patterns.dynamic.GET_handler,
+  });
+
+  instance.route({
+    url: '/bags',
+    method: 'POST',
+    schema: index.bags.POST_validation_schema,
+    preHandler: [
+      verify_firebase_id_token,
+      fetch_buyer,
+    ],
+    handler: index.bags.POST_handler,
+  });
+
+  instance.route({
+    url: '/bags',
+    method: 'GET',
+    preHandler: [
+      verify_firebase_id_token,
+      fetch_buyer,
+    ],
+    handler: index.bags.GET_handler,
+  });
+
+  instance.route({
+    url: '/bags/:bag_id',
+    method: 'DELETE',
+    schema: index.bags.dynamic.DELETE_validation_schema,
+    preHandler: [
+      verify_firebase_id_token,
+      fetch_buyer,
+    ],
+    handler: index.bags.dynamic.DELETE_handler,
+  });
+
+  instance.route({
+    url: '/bags/:bag_id',
+    method: 'PATCH',
+    schema: index.bags.dynamic.PATCH_validation_schema,
+    preHandler: [
+      verify_firebase_id_token,
+      fetch_buyer,
+    ],
+    handler: index.bags.dynamic.PATCH_handler,
+  });
 };

@@ -29,6 +29,7 @@
                 }
             }
         ],
-        "@typescript-eslint/no-unused-vars": "warn"
+        "@typescript-eslint/no-unused-vars": "warn",
+        "no-underscore-dangle": "off"
     }
 }

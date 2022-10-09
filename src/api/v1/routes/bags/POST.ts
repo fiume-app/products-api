@@ -138,6 +138,15 @@ export const POST_handler: RouteHandlerMethod = async (request, reply) => {
     return;
   }
 
+  if (fetch_res[0].inventory_count < body.qty) {
+    reply.status(404).send({
+      type: 'LIMITED_STOCK_ERROR',
+      msg: 'Product has limited stock',
+      error: 'limited stock',
+    });
+    return;
+  }
+
   try {
     await bags
       .create({

@@ -1,3 +1,4 @@
+import fastifyCors from '@fastify/cors';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import fastify from 'fastify';
@@ -11,6 +12,7 @@ initializeApp({
 const app = fastify({
   logger: true,
 });
+app.register(fastifyCors);
 
 const ajv = new Ajv({
   removeAdditional: true,
